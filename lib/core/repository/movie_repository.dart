@@ -10,7 +10,7 @@ import '../../keys.dart';
 @singleton
 class MovieRepository {
   static const String _MOVIE_API_BASE_URL = "https://api.themoviedb.org/3/";
-  static const String _ENDPOINT_MOVIE = "movie/";;
+  static const String _ENDPOINT_MOVIE = "movie/";
 
   final Dio dio = Dio()
     ..options.connectTimeout = 10000
