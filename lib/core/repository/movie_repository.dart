@@ -10,7 +10,7 @@ import '../entity/results.dart';
 class MovieRepository {
   static const String _MOVIE_API_BASE_URL = "https://api.themoviedb.org/3/";
   static const String _ENDPOINT_MOVIE = "movie/";
-  static const String _API_KEY = "ced51f464583dfbdb1cd9cf3c84a5857";
+  static const String _API_KEY = "";
 
   final Dio dio = Dio()
     ..options.connectTimeout = 10000
