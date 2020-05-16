@@ -31,7 +31,7 @@
 .pub/
 /build/
 vendor/
-lib/core/keys.dart
+lib/keys.dart
 
 # Web related
 lib/generated_plugin_registrant.dart
