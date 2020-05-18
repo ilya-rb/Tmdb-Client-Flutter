@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
+
 import 'package:inject/inject.dart';
 
 import 'package:tmdb_client_flutter/core/get_movie_by_type.dart';
+import 'package:tmdb_client_flutter/core/movie_type.dart';
+import 'package:tmdb_client_flutter/home/home_bloc.dart';
 import 'package:tmdb_client_flutter/home/now_playing_section.dart';
 import 'package:tmdb_client_flutter/home/movie_section.dart';
+import 'package:tmdb_client_flutter/home/trending_section.dart';
+import 'package:tmdb_client_flutter/localization/localization.dart';
 
 @provide
 class HomePage extends StatefulWidget {
-  final GetHomeSections getHomeSections;
+  final HomeBloc homeBloc;
 
-  HomePage(this.getHomeSections);
+  HomePage(this.homeBloc);
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -22,8 +27,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _createMoviesList() {
-    return FutureBuilder<Iterable<MovieBlock>>(
-      future: this.widget.getHomeSections.execute(),
+    return StreamBuilder<Iterable<MovieBlock>>(
+      stream: this.widget.homeBloc.homeSections(),
       initialData: [],
       builder: (
         BuildContext context,
@@ -36,23 +41,36 @@ class _HomePageState extends State<HomePage> {
           final blocks = snapshot.data.toList();
 
           return ListView.builder(
-              itemCount: blocks.length,
-              physics: BouncingScrollPhysics(),
-              itemBuilder: (BuildContext context, int index) {
-                if (index == 0) {
-                  return NowPlayingSection(blocks[index].movies.toList());
-                }
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 16.0),
-                  child: MovieSection(
-                    blocks[index].title,
-                    blocks[index].movies.toList(),
-                  ),
-                );
-              });
+            itemCount: blocks.length,
+            physics: BouncingScrollPhysics(),
+            itemBuilder: (BuildContext context, int index) {
+              if (blocks[index].runtimeType == NowPlaying) {
+                return NowPlayingSection(blocks[index].movies.toList());
+              } else if (blocks[index].runtimeType == TrendingList) {
+                return TrendingSection(blocks[index].movies.toList());
+              }
+              return MovieSection(
+                _sectionTitle(blocks[index].type),
+                blocks[index].movies.toList(),
+              );
+            },
+          );
         }
         return Text("Unknown state");
       },
     );
+  }
+
+  String _sectionTitle(MovieType movieType) {
+    switch (movieType) {
+      case MovieType.NowPlaying:
+        return AppLocalizations.of(context).nowPlaying;
+      case MovieType.Popular:
+        return AppLocalizations.of(context).popular;
+      case MovieType.TopRated:
+        return AppLocalizations.of(context).topRated;
+      default:
+        return AppLocalizations.of(context).upcoming;
+    }
   }
 }

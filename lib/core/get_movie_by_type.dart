@@ -1,7 +1,8 @@
-import 'package:tmdb_client_flutter/core/repository/movie_repository.dart';
 import 'package:inject/inject.dart';
-import 'entity/movie.dart';
-import 'movie_type.dart';
+
+import 'package:tmdb_client_flutter/core/repository/movie_repository.dart';
+import 'package:tmdb_client_flutter/core/entity/movie.dart';
+import 'package:tmdb_client_flutter/core/movie_type.dart';
 
 @provide
 class GetHomeSections {
@@ -16,9 +17,9 @@ class GetHomeSections {
       final results = await movieRepository.getMoviesByType(type);
 
       if (type == MovieType.NowPlaying) {
-        sections.add(NowPlaying(type.code(), results.toList()));
+        sections.add(NowPlaying(type, results.toList()));
       } else {
-        sections.add(MovieList(type.code(), results.toList()));
+        sections.add(MovieList(type, results.toList()));
       }
     }
 
@@ -27,15 +28,19 @@ class GetHomeSections {
 }
 
 abstract class MovieBlock {
-  final String title;
+  final MovieType type;
   final List<Movie> movies;
-  MovieBlock(this.title, this.movies);
+  MovieBlock(this.type, this.movies);
 }
 
 class NowPlaying extends MovieBlock {
-  NowPlaying(String title, List<Movie> movies) : super(title, movies);
+  NowPlaying(MovieType type, List<Movie> movies) : super(type, movies);
 }
 
 class MovieList extends MovieBlock {
-  MovieList(String title, List<Movie> movies) : super(title, movies);
+  MovieList(MovieType type, List<Movie> movies) : super(type, movies);
+}
+
+class TrendingList extends MovieBlock {
+  TrendingList(List<Movie> movies) : super(null, movies);
 }

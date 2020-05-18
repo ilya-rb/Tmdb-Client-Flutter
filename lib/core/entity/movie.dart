@@ -1,6 +1,8 @@
 import 'package:json_annotation/json_annotation.dart';
+
 import 'package:meta/meta.dart';
-import 'genre.dart';
+
+import 'package:tmdb_client_flutter/core/entity/genre.dart';
 
 part 'movie.g.dart';
 

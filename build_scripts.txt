@@ -1,0 +1,6 @@
+intl_translations: Generate ARB files
+flutter pub run intl_translation:extract_to_arb --output-dir=lib/localization/l10n lib/localization/localizations.dart
+
+intl_translations: Generate messages files
+flutter pub pub run intl_translation:generate_from_arb --output-dir=lib/localization/l10n \
+   --no-use-deferred-loading lib/localization/localization.dart lib/localization/l10n/intl_*.arb

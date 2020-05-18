@@ -31,7 +31,10 @@
 .pub/
 /build/
 vendor/
+
+# Generated lib stuf
 lib/keys.dart
+lib/localization/l10n
 
 # Web related
 lib/generated_plugin_registrant.dart

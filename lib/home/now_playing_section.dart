@@ -1,7 +1,10 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
+
 import 'package:tmdb_client_flutter/core/entity/movie.dart';
-import 'package:tmdb_client_flutter/util.dart';
+import 'package:tmdb_client_flutter/localization/localization.dart';
+import 'package:tmdb_client_flutter/util/util.dart';
 
 class NowPlayingSection extends StatefulWidget {
   final List<Movie> movies;
@@ -77,7 +80,7 @@ class _NowPlayingSectionState extends State<NowPlayingSection> {
                   style: Theme.of(context).textTheme.headline6,
                 ),
                 Text(
-                  "Now playing",
+                  AppLocalizations.of(context).nowPlaying,
                   style: Theme.of(context).textTheme.bodyText1,
                 ),
               ],

@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 
 import 'package:tmdb_client_flutter/core/entity/movie.dart';
+import 'package:tmdb_client_flutter/localization/localization.dart';
 import 'package:tmdb_client_flutter/util/util.dart';
 
-class MovieSection extends StatefulWidget {
+class TrendingSection extends StatefulWidget {
   final List<Movie> movies;
-  final String title;
 
-  MovieSection(this.title, this.movies, {Key key}) : super(key: key);
+  TrendingSection(this.movies);
 
   @override
-  _MovieSectionState createState() => _MovieSectionState();
+  _TrendingSectionState createState() => _TrendingSectionState();
 }
 
-class _MovieSectionState extends State<MovieSection> {
+class _TrendingSectionState extends State<TrendingSection> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -25,12 +25,12 @@ class _MovieSectionState extends State<MovieSection> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16.0),
             child: Text(
-              widget.title,
+              AppLocalizations.of(context).trending,
               style: Theme.of(context).textTheme.headline5,
             ),
           ),
           Container(
-            height: 200.0,
+            height: 80.0,
             margin: const EdgeInsets.all(16.0),
             child: ListView.separated(
               itemCount: widget.movies.length,
@@ -50,30 +50,15 @@ class _MovieSectionState extends State<MovieSection> {
 
   Widget _createListItem(Movie movie) {
     return Container(
-      width: 120,
-      height: 200.0,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Material(
-            elevation: 2.0,
-            borderRadius: BorderRadius.circular(4.0),
-            child: Ink.image(
-              image: NetworkImage(createImageUrl(movie.posterPath)),
-              height: 200.0,
-              fit: BoxFit.cover,
-              width: 120.0,
-              child: InkWell(
-                onTap: () {},
-              ),
-            ),
-          ),
-          // Text(
-          //   movie.title,
-          //   style: Theme.of(context).textTheme.bodyText2,
-          // )
-        ],
+      width: 80.0,
+      height: 80.0,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        border: Border.all(color: Theme.of(context).accentColor, width: 2.0),
+        image: DecorationImage(
+          fit: BoxFit.cover,
+          image: NetworkImage(createImageUrl(movie.posterPath)),
+        ),
       ),
     );
   }

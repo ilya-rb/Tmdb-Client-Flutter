@@ -2,30 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:inject/inject.dart';
 
 import 'package:tmdb_client_flutter/home/home_page.dart';
-import 'package:tmdb_client_flutter/types.dart';
+import 'package:tmdb_client_flutter/localization/localization.dart';
+import 'package:tmdb_client_flutter/util/types.dart';
+import 'package:tmdb_client_flutter/ui/theme.dart';
 
 @provide
 class App extends StatelessWidget {
   final Provider<HomePage> homePage;
+  final Provider<AppLocalizationsDelegate> appLocalizations;
 
-  App(this.homePage);
+  App(this.homePage, this.appLocalizations);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'TMDB Client',
-      theme: ThemeData(
-          visualDensity: VisualDensity.adaptivePlatformDensity,
-          primaryColor: Colors.purple[800],
-          accentColor: Colors.amber,
-          accentColorBrightness: Brightness.dark,
-          textTheme: TextTheme(
-            headline6: TextStyle(fontSize: 36.0, color: Colors.white),
-            headline5: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
-            bodyText1: TextStyle(fontSize: 16.0, color: Colors.white),
-          )),
+      title: "TMDB",
+      theme: themeData,
       home: Scaffold(body: homePage()),
       debugShowCheckedModeBanner: false,
+      localizationsDelegates: [appLocalizations()],
+      supportedLocales: AppLocalizationsDelegate.supportedLocalizations(),
     );
   }
 }
