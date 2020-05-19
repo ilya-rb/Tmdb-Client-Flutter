@@ -13,6 +13,11 @@ class HomeBloc {
     final homeSections = await getHomeSections.execute();
     yield homeSections;
     final trending = await getTrending.execute();
-    yield homeSections.followedBy(trending);
+
+    if (homeSections.length >= 1) {
+      yield homeSections.toList()..insert(1, trending);
+    } else {
+      yield homeSections.toList()..add(trending);
+    }
   }
 }

@@ -23,7 +23,11 @@ class _TrendingSectionState extends State<TrendingSection> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            padding: const EdgeInsets.only(
+              left: 16.0,
+              right: 16.0,
+              bottom: 16.0,
+            ),
             child: Text(
               AppLocalizations.of(context).trending,
               style: Theme.of(context).textTheme.headline5,
@@ -31,15 +35,18 @@ class _TrendingSectionState extends State<TrendingSection> {
           ),
           Container(
             height: 80.0,
-            margin: const EdgeInsets.all(16.0),
-            child: ListView.separated(
+            child: ListView.builder(
               itemCount: widget.movies.length,
               physics: BouncingScrollPhysics(),
-              separatorBuilder: (BuildContext conext, int index) =>
-                  SizedBox(width: 16.0),
               scrollDirection: Axis.horizontal,
               itemBuilder: (BuildContext context, int index) {
-                return _createListItem(widget.movies[index]);
+                return Padding(
+                  padding: createDefaultHorizontalListPadding(
+                    index,
+                    widget.movies.length,
+                  ),
+                  child: _createListItem(widget.movies[index]),
+                );
               },
             ),
           ),

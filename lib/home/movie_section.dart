@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:tmdb_client_flutter/core/entity/movie.dart';
+import 'package:tmdb_client_flutter/localization/localization.dart';
 import 'package:tmdb_client_flutter/util/util.dart';
 
 class MovieSection extends StatefulWidget {
@@ -14,32 +15,37 @@ class MovieSection extends StatefulWidget {
 }
 
 class _MovieSectionState extends State<MovieSection> {
+  static const _ITEM_HEIGHT = 170.0;
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      padding: const EdgeInsets.only(top: 8.0),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Text(
-              widget.title,
-              style: Theme.of(context).textTheme.headline5,
+            padding: const EdgeInsets.only(
+              left: 16.0,
+              right: 16.0,
+              bottom: 16.0,
             ),
+            child: _createSectionHeader(widget.title),
           ),
           Container(
-            height: 200.0,
-            margin: const EdgeInsets.all(16.0),
-            child: ListView.separated(
+            height: _ITEM_HEIGHT,
+            child: ListView.builder(
               itemCount: widget.movies.length,
               physics: BouncingScrollPhysics(),
-              separatorBuilder: (BuildContext conext, int index) =>
-                  SizedBox(width: 16.0),
               scrollDirection: Axis.horizontal,
               itemBuilder: (BuildContext context, int index) {
-                return _createListItem(widget.movies[index]);
+                return Padding(
+                  padding: createDefaultHorizontalListPadding(
+                    index,
+                    widget.movies.length,
+                  ),
+                  child: _createListItem(widget.movies[index]),
+                );
               },
             ),
           ),
@@ -50,31 +56,27 @@ class _MovieSectionState extends State<MovieSection> {
 
   Widget _createListItem(Movie movie) {
     return Container(
-      width: 120,
-      height: 200.0,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Material(
-            elevation: 2.0,
-            borderRadius: BorderRadius.circular(4.0),
-            child: Ink.image(
-              image: NetworkImage(createImageUrl(movie.posterPath)),
-              height: 200.0,
-              fit: BoxFit.cover,
-              width: 120.0,
-              child: InkWell(
-                onTap: () {},
-              ),
-            ),
-          ),
-          // Text(
-          //   movie.title,
-          //   style: Theme.of(context).textTheme.bodyText2,
-          // )
-        ],
+      height: _ITEM_HEIGHT,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(8.0),
+        child: Image.network(
+          createImageUrl(movie.posterPath),
+          fit: BoxFit.cover,
+        ),
       ),
+    );
+  }
+
+  Widget _createSectionHeader(String title) {
+    return Row(
+      children: <Widget>[
+        Text(title, style: Theme.of(context).textTheme.headline5),
+        Spacer(),
+        OutlineButton(
+          onPressed: () {},
+          child: Text(AppLocalizations.of(context).seeAll),
+        )
+      ],
     );
   }
 }

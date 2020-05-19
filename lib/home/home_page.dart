@@ -40,9 +40,11 @@ class _HomePageState extends State<HomePage> {
         if (snapshot.hasData) {
           final blocks = snapshot.data.toList();
 
-          return ListView.builder(
+          return ListView.separated(
             itemCount: blocks.length,
             physics: BouncingScrollPhysics(),
+            separatorBuilder: (BuildContext conext, int index) =>
+                SizedBox(height: 16.0),
             itemBuilder: (BuildContext context, int index) {
               if (blocks[index].runtimeType == NowPlaying) {
                 return NowPlayingSection(blocks[index].movies.toList());

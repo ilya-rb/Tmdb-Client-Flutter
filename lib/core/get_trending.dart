@@ -9,8 +9,8 @@ class GetTrending {
 
   GetTrending(this.movieRepository);
 
-  Future<Iterable<MovieBlock>> execute() async {
+  Future<MovieBlock> execute() async {
     final movies = await movieRepository.getTrending();
-    return [TrendingList(movies.toList())];
+    return TrendingList(movies.toList());
   }
 }

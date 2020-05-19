@@ -53,6 +53,12 @@ class AppLocalizations {
         name: "trending",
         args: [],
       );
+
+  String get seeAll => Intl.message(
+        "See all",
+        name: "seeAll",
+        args: [],
+      );
 }
 
 @provide
